@@ -14,15 +14,7 @@ Contact `support@transopt.io` to get one.
 
 ## Basic Workflow
 
-### 1. Check your depot configuration
-
-```
-GET /depots/
-```
-
-Returns your depot(s) — note the `depot_location` (lat/lon) and your `max_vehicles` limit. You'll need the depot coordinates for the next step.
-
-### 2. Submit an optimization request
+### 1. Submit an optimization request
 
 ```
 POST /optimize
@@ -54,10 +46,10 @@ Key query params:
 
 | Parameter | Description | Default |
 |---|---|---|
-| `dur_optimization` | How long the engine runs (e.g. `PT5S`). Longer = better routes, more latency. | `PT1S` |
+| `dur_optimization` | How long the engine runs. Longer = better routes, more latency. | `PT1S` |
 | `max_deliveries_per_vehicle` | Max concurrent deliveries per vehicle (1–2). | `1` |
 
-### 3. Read the response
+### 2. Read the response
 
 The response is a `Dispatch` object with three arrays:
 
@@ -73,9 +65,32 @@ The response is a `Dispatch` object with three arrays:
 
 ---
 
+## Field Conventions
+
+### `dt_` fields — Timestamps
+
+All fields prefixed with `dt_` are ISO 8601 timestamps and **must include a timezone**. UTC is recommended.
+
+```
+2026-06-25T10:00:00+00:00   ✅
+2026-06-25T10:00:00Z        ✅
+2026-06-25T10:00:00         ❌ missing timezone
+```
+
+### `dur_` fields — Durations
+
+All fields prefixed with `dur_` represent a duration and accept either format interchangeably:
+
+| Format | Example | Meaning |
+|---|---|---|
+| ISO 8601 duration | `PT30M` | 30 minutes |
+| ISO 8601 duration | `PT1H30M` | 1 hour 30 minutes |
+| Plain seconds | `1800` | 30 minutes |
+
+---
+
 ## Tips
 
-- All timestamps are ISO 8601 with timezone (e.g. `2026-06-25T10:00:00+00:00`)
-- `dt_prepared` should be ≥ `dt_received`; the engine won't dispatch before the order is ready
+- `dt_prepared` should be ≥ `dt_received` — the engine won't dispatch before the order is ready
 - Vehicle `lat`/`lon` are optional — if omitted, the depot location is assumed as the starting point
 - `dt_return` on a vehicle tells the engine the vehicle is busy until that time
