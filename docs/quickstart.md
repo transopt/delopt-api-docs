@@ -24,7 +24,7 @@ Use this to create the optimal delivery plan (dispatch) based on the active orde
 POST /optimize
 ```
 
-Build a request body with three arrays:
+Build a request body with three arrays (depots, vehicles, orders):
 
 ```json
 {
@@ -63,9 +63,9 @@ The response is a `Dispatch` object with three arrays:
 
 ### 2. Single vehicle departure (`POST /depart-vehicle`)
 
-Use this just before a specific vehicle departs. It includes the expected travel time of the vehicle and the individual arrival times to the orders based on the actual time of the departure.
+Use this just before a specific vehicle departs. It includes the expected travel time of the vehicle and the individual arrival times for each order based on the actual departure time of the vehicle.
 
-The request body takes a single depot, a single vehicle, and a list of orders:
+The request body takes a single depot, a single vehicle, and the list of orders to be delivered by the vehicle:
 
 ```json
 {
@@ -92,7 +92,7 @@ POST /depart-vehicle?delivery_id=my-delivery-123
 The response is a `VehicleDeparture` object:
 
 - **`vehicle`** — the vehicle's scheduled `dt_depart` and estimated `dt_return`
-- **`orders`** — the orders assigned to this run, each with `dt_depart`, `dt_arrive`, and `delivery_id`
+- **`orders`** — the orders assigned to this delivery, each with `dt_depart`, `dt_arrive`, and `delivery_id`
 
 ---
 
@@ -136,7 +136,6 @@ The response is a `VehicleDeparture` object:
 | `dur_wait_target` | ➖ | Target maximum wait time from order placement to delivery. Default: `PT15M` |
 | `priority` | ➖ | If `true`, the order is treated as urgent and departs as soon as possible. Default: `false` |
 | `address` | ➖ | Human-readable delivery address. Passed through to the response, not used by the engine |
-| `custom_delivery_id` | ➖ | Optional external grouping ID — use to associate orders with your own delivery records |
 | `items` | ➖ | List of item identifiers or descriptions in the order. Passed through to the response |
 
 ---
