@@ -1,0 +1,30 @@
+site_name: Delopt API Docs
+site_url: https://docs.delopt.transopt.io
+site_description: Documentation for the Delopt delivery optimization API
+site_author: transopt
+
+repo_name: transopt/delopt-api
+repo_url: https://github.com/transopt/delopt-api
+
+theme:
+  name: material
+  palette:
+    primary: indigo
+    accent: indigo
+  features:
+    - navigation.sections
+    - navigation.top
+    - content.code.copy
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.inlinehilite
+  - admonition
+  - tables
+
+nav:
+  - Home: index.md
+  - Quickstart (EN): quickstart.md
+  - Quickstart (GR): quickstart-el.md
